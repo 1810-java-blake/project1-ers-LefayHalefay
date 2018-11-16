@@ -14,7 +14,7 @@ public interface ReimbursementService {
 	
 	Reimbursement cancelRequestByEmployee(int employeeId, int requestId); //Reimbursement/request/cancelRequest
 	
-	Reimbursement updateRequestByMgr(); //Reimbursement/request/updateRequest
+	Reimbursement updateRequestByMgr(Reimbursement reimbRequest); //Reimbursement/request/updateRequest
 	
 	int addRequestByEmployee(Reimbursement newReimbursement); //Reimbursement/request/addRequest.
 	

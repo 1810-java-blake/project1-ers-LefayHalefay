@@ -21,7 +21,7 @@ public interface ReimbursementDao {
 	
 	Reimbursement cancelRequestByEmployee(int employeeId, int requestId);
 	
-	Reimbursement updateRequestByMgr();
+	Reimbursement updateRequestByMgr(Reimbursement updateReimb);
 	int addRequestByEmployee(Reimbursement newReimbursement);
 
 	List<Reimbursement> findRequestAllEmployees();

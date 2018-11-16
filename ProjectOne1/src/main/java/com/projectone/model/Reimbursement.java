@@ -2,18 +2,80 @@ package com.projectone.model;
 
 import java.sql.Timestamp;
 
+
 public class Reimbursement {
 	
 	private int reimbId;
+
 	private double reimbAmount;
 	private String reimbDescription;
 	private String reimbReciept;
 	private int reimbAuthorId;
+	private EmployeeUser employeeUser;
 	private int reimbResolverId;
+	private String reimbStatus;
 	private int reimbStatusId;
+	private String reimbType;
 	private int reimbTypeId;
 	private Timestamp reimbSubmitted;
 	private Timestamp reimbResolved;
+	
+	public Reimbursement(int reimbId, int reimbResolverId, int reimbStatusId) {
+		super();
+		this.reimbId = reimbId;
+		this.reimbResolverId = reimbResolverId;
+		this.reimbStatusId = reimbStatusId;
+	}
+	
+	public Reimbursement(int reimbId, double reimbAmount, String reimbDescription, String reimbReciept,
+			int reimbAuthorId, int reimbTypeId, int reimbStatusId, Timestamp reimbSubmitted, Timestamp reimbResolved) {
+		super();
+		this.reimbId = reimbId;
+		this.reimbAmount = reimbAmount;
+		this.reimbDescription = reimbDescription;
+		this.reimbReciept = reimbReciept;
+		this.reimbAuthorId = reimbAuthorId;
+		this.reimbTypeId = reimbTypeId;
+		this.reimbStatusId = reimbStatusId;
+		this.reimbSubmitted = reimbSubmitted;
+		this.reimbResolved = reimbResolved;
+	}
+
+	public Reimbursement(int reimbId, double reimbAmount, String reimbDescription, String reimbReciept,
+			EmployeeUser employeeUser, String reimbStatus, String reimbType, Timestamp reimbSubmitted,
+			Timestamp reimbResolved) {
+		super();
+		this.reimbId = reimbId;
+		this.reimbAmount = reimbAmount;
+		this.reimbDescription = reimbDescription;
+		this.reimbReciept = reimbReciept;
+		this.employeeUser = employeeUser;
+		this.reimbStatus = reimbStatus;
+		this.reimbType = reimbType;
+		this.reimbSubmitted = reimbSubmitted;
+		this.reimbResolved = reimbResolved;
+	}
+	
+	public Reimbursement(int reimbId, double reimbAmount, Timestamp reimbSubmitted, Timestamp reimbResolved,
+			String reimbReciept, int reimbAuthorId, int reimbResolverId,  String reimbStatus, 
+			String reimbType, String reimbDescription) {
+		super();
+		this.reimbId = reimbId;
+		this.reimbAmount = reimbAmount;
+		this.reimbDescription = reimbDescription;
+		this.reimbReciept = reimbReciept;
+		this.reimbAuthorId = reimbAuthorId;
+		this.reimbResolverId = reimbResolverId;
+		this.reimbStatus = reimbStatus;
+		this.reimbType = reimbType;
+		this.reimbSubmitted = reimbSubmitted;
+		this.reimbResolved = reimbResolved;
+	}
+	
+	public Reimbursement() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 	public int getReimbId() {
 		return reimbId;
@@ -75,23 +137,23 @@ public class Reimbursement {
 	}
 
 
-	public int getReimbStatusId() {
-		return reimbStatusId;
+	public String getReimbStatus() {
+		return reimbStatus;
 	}
 
 
-	public void setReimbStatusId(int reimbStatusId) {
-		this.reimbStatusId = reimbStatusId;
+	public void setReimbStatusId(String reimbStatus) {
+		this.reimbStatus = reimbStatus;
 	}
 
 
-	public int getReimbTypeId() {
-		return reimbTypeId;
+	public String getreimbType() {
+		return reimbType;
 	}
 
 
-	public void setReimbTypeId(int reimbTypeId) {
-		this.reimbTypeId = reimbTypeId;
+	public void setreimbType(String reimbType) {
+		this.reimbType = reimbType;
 	}
 
 
@@ -113,48 +175,28 @@ public class Reimbursement {
 	public void setReimbResolved(Timestamp reimbResolved) {
 		this.reimbResolved = reimbResolved;
 	}
+	
+	public EmployeeUser getEmployeeUser() {
+		return employeeUser;
+	}
 
+	public void setEmployeeUser(EmployeeUser employeeUser) {
+		this.employeeUser = employeeUser;
+	}
 	
-	
-	public Reimbursement(int reimbId, double reimbAmount, Timestamp reimbSubmitted, Timestamp reimbResolved,
-			String reimbReciept, int reimbAuthorId, int reimbResolverId,  int reimbStatusId, 
-			int reimbTypeId, String reimbDescription) {
-		super();
-		this.reimbId = reimbId;
-		this.reimbAmount = reimbAmount;
-		this.reimbDescription = reimbDescription;
-		this.reimbReciept = reimbReciept;
-		this.reimbAuthorId = reimbAuthorId;
-		this.reimbResolverId = reimbResolverId;
-		this.reimbStatusId = reimbStatusId;
+	public int getReimbTypeId() {
+		return reimbTypeId;
+	}
+
+	public void setReimbTypeId(int reimbTypeId) {
 		this.reimbTypeId = reimbTypeId;
-		this.reimbSubmitted = reimbSubmitted;
-		this.reimbResolved = reimbResolved;
+	}
+	public int getReimbStatusId() {
+		return reimbStatusId;
 	}
 
-	
-	public Reimbursement() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(reimbAmount);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + reimbAuthorId;
-		result = prime * result + ((reimbDescription == null) ? 0 : reimbDescription.hashCode());
-		result = prime * result + reimbId;
-		result = prime * result + ((reimbReciept == null) ? 0 : reimbReciept.hashCode());
-		result = prime * result + ((reimbResolved == null) ? 0 : reimbResolved.hashCode());
-		result = prime * result + reimbResolverId;
-		result = prime * result + reimbStatusId;
-		result = prime * result + ((reimbSubmitted == null) ? 0 : reimbSubmitted.hashCode());
-		result = prime * result + reimbTypeId;
-		return result;
+	public void setReimbStatusId(int reimbStatusId) {
+		this.reimbStatusId = reimbStatusId;
 	}
 
 
@@ -167,6 +209,11 @@ public class Reimbursement {
 		if (getClass() != obj.getClass())
 			return false;
 		Reimbursement other = (Reimbursement) obj;
+		if (employeeUser == null) {
+			if (other.employeeUser != null)
+				return false;
+		} else if (!employeeUser.equals(other.employeeUser))
+			return false;
 		if (Double.doubleToLongBits(reimbAmount) != Double.doubleToLongBits(other.reimbAmount))
 			return false;
 		if (reimbAuthorId != other.reimbAuthorId)
@@ -190,14 +237,17 @@ public class Reimbursement {
 			return false;
 		if (reimbResolverId != other.reimbResolverId)
 			return false;
-		if (reimbStatusId != other.reimbStatusId)
+		if (reimbStatus == null) {
+			if (other.reimbStatus != null)
+				return false;
+		} else if (!reimbStatus.equals(other.reimbStatus))
 			return false;
 		if (reimbSubmitted == null) {
 			if (other.reimbSubmitted != null)
 				return false;
 		} else if (!reimbSubmitted.equals(other.reimbSubmitted))
 			return false;
-		if (reimbTypeId != other.reimbTypeId)
+		if (reimbType != other.reimbType)
 			return false;
 		return true;
 	}
@@ -206,12 +256,16 @@ public class Reimbursement {
 	public String toString() {
 		return "Reimbursement [reimbId=" + reimbId + ", reimbAmount=" + reimbAmount + ", reimbDescription="
 				+ reimbDescription + ", reimbReciept=" + reimbReciept + ", reimbAuthorId=" + reimbAuthorId
-				+ ", reimbResolverId=" + reimbResolverId + ", reimbStatusId=" + reimbStatusId + ", reimbTypeId="
-				+ reimbTypeId + ", reimbSubmitted=" + reimbSubmitted + ", reimbResolved=" + reimbResolved
+				+ ", reimbResolverId=" + reimbResolverId + ", reimbStatusId=" + reimbStatus+ ", reimbType="
+				+ reimbType + ", reimbSubmitted=" + reimbSubmitted + ", reimbResolved=" + reimbResolved
 				+ ", hashCode()=" + hashCode() + ", getClass()=" + getClass() + ", toString()=" + super.toString()
 				+ "]";
 	}
 
 
+
+
 	
+
+
 }

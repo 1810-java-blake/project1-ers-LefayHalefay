@@ -33,8 +33,8 @@ public class ReimbursementController {
 			case "POST":
 				processPost(reqt, resp);
 				break;
-			case "PUT":
-				processPut(reqt, resp);
+			case "PATCH":
+				processPatch(reqt, resp);
 				break;	
 			case "OPTIONS":
 				return;
@@ -85,7 +85,7 @@ public class ReimbursementController {
 		
 		System.out.println(Arrays.toString(uriArray));
 		
-		if(uriArray[2].startsWith("addRequest")) {
+		if(uriArray[2].startsWith("updateRequest")) {
 			
 			Reimbursement reimbRequest = objMap.readValue(reqt.getReader(), Reimbursement.class);
 			reimbService.addRequestByEmployee(reimbRequest);
@@ -97,7 +97,7 @@ public class ReimbursementController {
 		}
 	}
 	
-	private void processPut(HttpServletRequest reqt, HttpServletResponse resp ) throws JsonParseException, JsonMappingException, IOException {
+	private void processPatch(HttpServletRequest reqt, HttpServletResponse resp ) throws JsonParseException, JsonMappingException, IOException {
 		String uri = reqt.getRequestURI();
 		String context = "Reimbursement";
 		uri = uri.substring(context.length(), uri.length());
@@ -108,10 +108,12 @@ public class ReimbursementController {
 		if(uriArray[2].startsWith("updateRequest")) {
 		
 			Reimbursement reimbRequest = objMap.readValue(reqt.getReader(), Reimbursement.class);
-			reimbService.addRequestByEmployee(reimbRequest);
+			reimbService.updateRequestByMgr(reimbRequest);
+			
 			resp.getWriter().write(" " + reimbRequest.getReimbId());
 			
 			resp.setStatus(201);
+			return;
 		}
 	}	
 }

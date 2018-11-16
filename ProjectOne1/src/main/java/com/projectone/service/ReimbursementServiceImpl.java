@@ -26,16 +26,16 @@ public class ReimbursementServiceImpl implements ReimbursementService {
 		return rd.cancelRequestByEmployee(employeeId, requestId);
 	}
 
-	@Override
-	public Reimbursement updateRequestByMgr() {
-		
-		return rd.updateRequestByMgr();
-	}
-
+	
 	@Override
 	public int addRequestByEmployee(Reimbursement newReimbursement) {
 		
 		return rd.addRequestByEmployee(newReimbursement);
+	}
+
+	@Override
+	public Reimbursement updateRequestByMgr(Reimbursement reimbUpdate) {
+		return rd.updateRequestByMgr(reimbUpdate);
 	}
 
 }

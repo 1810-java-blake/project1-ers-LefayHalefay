@@ -15,7 +15,7 @@ import com.projectone.util.ConnectionUtility;
 
 public class ReimbursementDaoJDBC implements ReimbursementDao {
 
-	/* This an optinal feature, will be tackled if there time is left*/
+	/* This an optional feature, will be tackled if there time is left*/
 	@Override
 	public Reimbursement cancelRequestByEmployee(int employeeId, int requestId) {
 		
@@ -23,9 +23,10 @@ public class ReimbursementDaoJDBC implements ReimbursementDao {
 	}
 
 	@Override
-	public Reimbursement updateRequestByMgr() {
+	public Reimbursement updateRequestByMgr(Reimbursement updateReimb) {
 		
-		Reimbursement updateReimb = new Reimbursement();
+		//Reimbursement updateReimb = new Reimbursement();
+		
 		System.out.print("What they want, TO UPDATE:");
 		
 		try(Connection conn = ConnectionUtility.getConnection()) {
@@ -33,9 +34,11 @@ public class ReimbursementDaoJDBC implements ReimbursementDao {
 			+ "SET reimb_resolved=?,reimb_resolver=?, reimb_status_id=?\n" 
 			+ "WHERE reimb_id = ?");
 			
+			
 			prepStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
 			prepStmt.setInt(2, updateReimb.getReimbResolverId());
 			prepStmt.setInt(3, updateReimb.getReimbStatusId());
+			prepStmt.setInt(4, updateReimb.getReimbId());
 			
 			prepStmt.executeUpdate();
 		}
@@ -54,7 +57,7 @@ public class ReimbursementDaoJDBC implements ReimbursementDao {
 		try(Connection conn = ConnectionUtility.getConnection()) {
 			
 			PreparedStatement prepStmt = conn.prepareStatement("INSERT INTO paymentsystems.ers_reimbursement(\n" 
-			+ "reimb_amount, reimb_submitted, reimb_resolved, reimb_receipt, reimb_author, "
+			+ "reimb_amount, reimb_submitted, reimb_resolved, reimb_receipt, reimb_author,\n"
 			+ "reimb_resolver, reimb_status_id, reimb_type_id, reimb_description)\n" 
 			+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", new String[] {"reimb_id"});
 			
@@ -70,17 +73,10 @@ public class ReimbursementDaoJDBC implements ReimbursementDao {
 			
 			prepStmt.executeUpdate();
 			
-//			ResultSet rs = prepStmt.getGeneratedKeys();
-//			if(rs.next()) {
-//				int reimbId = rs.getInt("reimb_id");
-//				return reimbId;
-//			}
-			
 		}catch(SQLException e) {
 			
 			e.printStackTrace();
 		}
-		
 		
 		return 0;
 	}
@@ -89,52 +85,92 @@ public class ReimbursementDaoJDBC implements ReimbursementDao {
 	public List<Reimbursement> findRequestAllEmployees() {
 		
 		try(Connection conn = ConnectionUtility.getConnection()){
-			
-			PreparedStatement prepStmt = conn.prepareStatement("SELECT * FROM ers_reimbursement");
-			
+					
+			PreparedStatement prepStmt = conn.prepareStatement("SELECT ers_reimbursement.reimb_amount, \n" + 
+					" ers_reimbursement.reimb_id,\n" + 
+					" ers_reimbursement.reimb_submitted,\n" + 
+					" ers_reimbursement.reimb_resolved,\n" + 
+					" ers_reimbursement.reimb_receipt,\n" + 
+					" ers_reimbursement.reimb_amount,\n" + 
+					" ers_reimbursement.reimb_description,\n" + 
+					" ers_users.user_first_name,\n" + 
+					" ers_users.user_last_name,\n" + 
+					" ers_reimbursement_type.reimb_type,\n" + 
+					" ers_reimbursement_status.reimb_status\n" + 
+					" FROM ers_reimbursement\n" + 
+					" LEFT JOIN ers_users ON ers_reimbursement.reimb_author= ers_users.ers_user_id\n" + 
+					" LEFT JOIN ers_reimbursement_status ON ers_reimbursement.reimb_status_id = ers_reimbursement_status.reimb_status_id\n" + 
+					" LEFT JOIN ers_reimbursement_type ON ers_reimbursement.reimb_type_id = ers_reimbursement_type.reimb_type_id");
+
 			ResultSet rstSet = prepStmt.executeQuery();
-			
+
 			List<Reimbursement> reimbursementRqt = new ArrayList<>();
-			
-			while(rstSet.next()) {
-				reimbursementRqt.add(new Reimbursement(rstSet.getInt("reimb_id"),rstSet.getDouble("reimb_amount"), 
-				rstSet.getTimestamp("reimb_submitted"),rstSet.getTimestamp("reimb_resolved"), rstSet.getString("reimb_receipt"), 
-				rstSet.getInt("reimb_author"), rstSet.getInt("reimb_resolver"), rstSet.getInt("reimb_status_id"), 
-				rstSet.getInt("reimb_type_id"), rstSet.getString("reimb_description")));
+
+			while (rstSet.next()) {
+				reimbursementRqt.add(new Reimbursement(rstSet.getInt("reimb_id"),
+						rstSet.getDouble("reimb_amount"),
+						rstSet.getString("reimb_description"),
+						rstSet.getString("reimb_receipt"),
+						new EmployeeUser(0,rstSet.getString("user_first_name"),rstSet.getString("user_last_name"), null),
+						rstSet.getString("reimb_status"),
+						rstSet.getString("reimb_type"),
+						rstSet.getTimestamp("reimb_submitted"), 
+						rstSet.getTimestamp("reimb_resolved")));
 			}
-			
+
 			return reimbursementRqt;
-			
+
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
 		}
 		
 		return null;
+		
 	}
 
 	@Override
 	public List<Reimbursement> findAllRequestsForEmployee(int reimbAuthorId) {
 		
-		try(Connection conn = ConnectionUtility.getConnection()){
-			
+		try (Connection conn = ConnectionUtility.getConnection()) {
+
 			List<Reimbursement> reimbursementRqt = new ArrayList<>();
-			PreparedStatement prepStmt = conn.prepareStatement("SELECT * FROM ers_reimbursement WHERE reimb_author = ?");
+			PreparedStatement prepStmt = conn
+					.prepareStatement("SELECT ers_reimbursement.reimb_amount,\n "+ 					
+							" ers_reimbursement.reimb_id,\n" + 
+							" ers_reimbursement.reimb_submitted,\n" + 
+							" ers_reimbursement.reimb_resolved,\n" + 
+							" ers_reimbursement.reimb_receipt,\n" + 
+							" ers_reimbursement.reimb_amount,\n" + 
+							" ers_reimbursement.reimb_description,\n" + 
+							" ers_users.user_first_name,\n" + 
+							" ers_users.user_last_name,\n" + 
+							" ers_reimbursement_type.reimb_type,\n" + 
+							" ers_reimbursement_status.reimb_status FROM ers_reimbursement\n" + 
+							" LEFT JOIN ers_users ON ers_reimbursement.reimb_resolver = ers_users.ers_user_id\n" + 
+							" LEFT JOIN ers_reimbursement_status ON ers_reimbursement.reimb_status_id = ers_reimbursement_status.reimb_status_id\n" + 
+							" LEFT JOIN ers_reimbursement_type ON ers_reimbursement.reimb_type_id = ers_reimbursement_type.reimb_type_id \n" + 
+							" WHERE reimb_author = ?");
+			
 			prepStmt.setInt(1, reimbAuthorId);
-			
+
 			ResultSet rstSet = prepStmt.executeQuery();
-	
-			while(rstSet.next()) {
-					reimbursementRqt.add(new Reimbursement(rstSet.getInt("reimb_id"),rstSet.getDouble("reimb_amount"), 
-					rstSet.getTimestamp("reimb_submitted"),rstSet.getTimestamp("reimb_resolved"), rstSet.getString("reimb_receipt"), 
-					rstSet.getInt("reimb_author"), rstSet.getInt("reimb_resolver"), rstSet.getInt("reimb_status_id"), 
-					rstSet.getInt("reimb_type_id"), rstSet.getString("reimb_description")));		
+
+			while (rstSet.next()) {
+				reimbursementRqt.add(new Reimbursement(rstSet.getInt("reimb_id"),
+						rstSet.getDouble("reimb_amount"),
+						rstSet.getString("reimb_description"),
+						rstSet.getString("reimb_receipt"),
+						new EmployeeUser(0,rstSet.getString("user_first_name"),rstSet.getString("user_last_name"), null),
+						rstSet.getString("reimb_status"),
+						rstSet.getString("reimb_type"),
+						rstSet.getTimestamp("reimb_submitted"), 
+						rstSet.getTimestamp("reimb_resolved")));
 			}
-			
 			return reimbursementRqt;
-			
+
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
 		}
 		

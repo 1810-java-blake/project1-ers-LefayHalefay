@@ -61,16 +61,6 @@ public class DispatcherServlet extends HttpServlet {
 			reimbCtr.process(reqt, resp);
 			resp.setStatus(404);
 		}
-        
-//        if (uri.startsWith("employee")) {
-//			empUsrCtr.process(reqt, resp);
-//		} else if (uri.startsWith("Reimbursement")) {
-//			reimbCtr.process(reqt, resp);
-//		}else {
-//			reimbCtr.process(reqt, resp);
-//			resp.setStatus(404);
-//		}
-//		
 		
 	}
 	
