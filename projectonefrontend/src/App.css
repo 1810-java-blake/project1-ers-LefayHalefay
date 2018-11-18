@@ -38,3 +38,14 @@
   justify-content: space-between;
 }
 
+.emp-mgr-dashboard{
+  color: white;
+}
+
+.wrong-credential {
+  color: red;
+  display: flex;
+}
+  
+
+

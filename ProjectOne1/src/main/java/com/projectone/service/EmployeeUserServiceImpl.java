@@ -31,12 +31,20 @@ public class EmployeeUserServiceImpl implements EmployeeUserService {
 		if(eUsr != null)
 		{
 			session.setAttribute("role", eUsr.getErsEmployeeRole().getRoleName());
+			System.out.println("Bro, this is your session!");
+			System.out.println(session.getAttribute("role"));
 			
 			return true;
 		}
-		
-		
+			
 		return false;
+	}
+
+	@Override
+	public List<EmployeeUser> findByUsername(String username) {
+		
+		System.out.print("Let me know you are here!");
+		return empDao.findByUsername(username);
 	}
 
 }

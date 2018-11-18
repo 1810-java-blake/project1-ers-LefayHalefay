@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -93,6 +94,7 @@ public class ReimbursementDaoJDBC implements ReimbursementDao {
 					" ers_reimbursement.reimb_receipt,\n" + 
 					" ers_reimbursement.reimb_amount,\n" + 
 					" ers_reimbursement.reimb_description,\n" + 
+					" ers_users.ers_user_id,\n" + 
 					" ers_users.user_first_name,\n" + 
 					" ers_users.user_last_name,\n" + 
 					" ers_reimbursement_type.reimb_type,\n" + 
@@ -111,7 +113,7 @@ public class ReimbursementDaoJDBC implements ReimbursementDao {
 						rstSet.getDouble("reimb_amount"),
 						rstSet.getString("reimb_description"),
 						rstSet.getString("reimb_receipt"),
-						new EmployeeUser(0,rstSet.getString("user_first_name"),rstSet.getString("user_last_name"), null),
+						new EmployeeUser(rstSet.getInt("ers_user_id"),rstSet.getString("user_first_name"),rstSet.getString("user_last_name"), null, null),
 						rstSet.getString("reimb_status"),
 						rstSet.getString("reimb_type"),
 						rstSet.getTimestamp("reimb_submitted"), 
@@ -143,6 +145,7 @@ public class ReimbursementDaoJDBC implements ReimbursementDao {
 							" ers_reimbursement.reimb_receipt,\n" + 
 							" ers_reimbursement.reimb_amount,\n" + 
 							" ers_reimbursement.reimb_description,\n" + 
+							" ers_users.ers_user_id,\n" + 
 							" ers_users.user_first_name,\n" + 
 							" ers_users.user_last_name,\n" + 
 							" ers_reimbursement_type.reimb_type,\n" + 
@@ -161,7 +164,7 @@ public class ReimbursementDaoJDBC implements ReimbursementDao {
 						rstSet.getDouble("reimb_amount"),
 						rstSet.getString("reimb_description"),
 						rstSet.getString("reimb_receipt"),
-						new EmployeeUser(0,rstSet.getString("user_first_name"),rstSet.getString("user_last_name"), null),
+						new EmployeeUser(rstSet.getInt("ers_user_id"),rstSet.getString("user_first_name"),rstSet.getString("user_last_name"), null, null),
 						rstSet.getString("reimb_status"),
 						rstSet.getString("reimb_type"),
 						rstSet.getTimestamp("reimb_submitted"), 
@@ -176,4 +179,5 @@ public class ReimbursementDaoJDBC implements ReimbursementDao {
 		
 		return null;
 	}
+	
 }

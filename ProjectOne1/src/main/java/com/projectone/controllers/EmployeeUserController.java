@@ -53,9 +53,13 @@ public class EmployeeUserController {
 		} else if(uriArray[2].startsWith("userLogin")){
 			
 			System.out.println("Attempting To Log In...");
+			
 			Credentials cred = objMap.readValue(reqt.getReader(), Credentials.class);
 			
-			if(!empUserService.loginUser(cred, reqt.getSession())) {
+			if(empUserService.loginUser(cred, reqt.getSession())) {
+				resp.setStatus(200);
+			}
+			else if(!empUserService.loginUser(cred, reqt.getSession())) {
 				resp.setStatus(403);
 			}
 			
@@ -91,7 +95,21 @@ public class EmployeeUserController {
 				resp.setStatus(400);
 				return;
 			}		
-		} else {
+		} else if(uriArray[2].startsWith("byUsername")){
+			try {
+				String userName = uriArray[3];
+				System.out.println(userName);
+				List<EmployeeUser> user = empUserService.findByUsername(userName);
+				ResponseMapper.convertAndAttach(user, resp);
+				return;
+				
+			} catch(NumberFormatException e) {
+				resp.setStatus(400);
+				return;
+			}		
+		}
+		
+		else {
 			resp.setStatus(404);
 		}
 	}

@@ -21,10 +21,12 @@ class App extends Component {
           <div id="main-content-container">
           <Switch>
                 <Route path="/home" component={EmployeeDashboardComponent}/>
+                <Route path="/employee-dashboard" component={EmployeeDashboardComponent}/>
+                <Route path="/manager-dashboard" component={ManagerDashComponent}/>
                 <Route path="/sign-up" component={SignUpComponent}/>
                 <Route path="/sign-in-employee" component={SignInEmployeeComponent}/>
                 <Route path="/sign-in-manager" component={SignInManagerComponent}/>
-                <Route path="/about-page" component={ManagerDashComponent}/>
+                <Route path=""/>
             </Switch>
           </div>
       </>

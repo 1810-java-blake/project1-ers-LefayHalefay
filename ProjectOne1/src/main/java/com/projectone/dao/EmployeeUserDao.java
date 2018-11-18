@@ -9,6 +9,8 @@ public interface EmployeeUserDao {
 	EmployeeUserDao currentImplementation = new EmployeeUserDaoJDBC();
 	
 	List<EmployeeUser> findById(int id);
+	
+	List<EmployeeUser> findByUsername(String username);
 
 	List<EmployeeUser> findAll();
 

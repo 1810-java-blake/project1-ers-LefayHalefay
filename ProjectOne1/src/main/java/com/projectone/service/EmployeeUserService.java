@@ -11,6 +11,8 @@ public interface EmployeeUserService {
 	EmployeeUserService currentImplementation = new EmployeeUserServiceImpl();
 	
 	List<EmployeeUser> findById(int id);
+	
+	List<EmployeeUser> findByUsername(String username);
 
 	List<EmployeeUser> findAll();
 

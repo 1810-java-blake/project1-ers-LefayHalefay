@@ -49,6 +49,38 @@ public class EmployeeUserDaoJDBC implements EmployeeUserDao {
 		}
 		return null;
 	}
+	
+	@Override
+	public List<EmployeeUser> findByUsername(String username) {
+		
+		try (Connection conn = ConnectionUtility.getConnection()) {
+
+			PreparedStatement ps = conn.prepareStatement("SELECT ers_users.ers_username, \n"
+					+ "ers_users.ers_user_id,\n" + "ers_users.user_first_name,\n" + "ers_users.user_last_name,\n"
+					+ "ers_users.user_email,\n" + "ers_user_roles.ers_user_roles_id,\n" + "ers_user_roles.user_role\n"
+					+ "FROM ers_users LEFT JOIN ers_user_roles ON ers_users.ers_user_role_id = ers_user_roles.ers_user_roles_id WHERE ers_username = ?");
+
+			ps.setString(1, username);
+
+			ResultSet rs = ps.executeQuery();
+
+			List<EmployeeUser> employeeUserList = new ArrayList<>();
+
+			while (rs.next()) {
+
+				employeeUserList.add(new EmployeeUser(rs.getInt("ers_user_id"), rs.getString("ers_username"),
+						rs.getString("user_first_name"), rs.getString("user_last_name"),
+						new EmployeeUserRole(rs.getInt("ers_user_roles_id"), rs.getString("user_role"))));
+			}
+
+			return employeeUserList;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	@Override
 	public List<EmployeeUser> findAll() {
@@ -93,9 +125,6 @@ public class EmployeeUserDaoJDBC implements EmployeeUserDao {
 			ResultSet rs = ps.executeQuery();
 			
 			if (rs.next()) {
-				
-				
-				
 				return (new EmployeeUser(rs.getInt("ers_user_id"), rs.getString("ers_username"),
 						rs.getString("user_first_name"), rs.getString("user_last_name"),
 						new EmployeeUserRole(rs.getInt("ers_user_roles_id"), rs.getString("user_role"))));
@@ -105,11 +134,8 @@ public class EmployeeUserDaoJDBC implements EmployeeUserDao {
 			e.printStackTrace();
 		}
 		
-		
-		
-		
-		
 		return null;
 	}
+
 
 }
