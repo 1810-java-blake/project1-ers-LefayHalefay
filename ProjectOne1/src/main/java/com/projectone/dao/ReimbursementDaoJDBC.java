@@ -6,15 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
 import com.projectone.model.EmployeeUser;
 import com.projectone.model.Reimbursement;
 import com.projectone.util.ConnectionUtility;
 
 public class ReimbursementDaoJDBC implements ReimbursementDao {
+	
 
 	/* This an optional feature, will be tackled if there time is left*/
 	@Override
@@ -54,6 +52,7 @@ public class ReimbursementDaoJDBC implements ReimbursementDao {
 	public int addRequestByEmployee(Reimbursement newReimb) {
 		
 		System.out.println("It is funny how the act now!");
+			
 		
 		try(Connection conn = ConnectionUtility.getConnection()) {
 			
@@ -64,7 +63,7 @@ public class ReimbursementDaoJDBC implements ReimbursementDao {
 			
 			prepStmt.setDouble(1 , newReimb.getReimbAmount());
 			prepStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-			prepStmt.setTimestamp(3,  new Timestamp(System.currentTimeMillis()));
+			prepStmt.setTimestamp(3,  null);
 			prepStmt.setString(4, newReimb.getReimbReciept());
 			prepStmt.setInt(5, newReimb.getReimbAuthorId());
 			prepStmt.setInt(6, newReimb.getReimbResolverId());

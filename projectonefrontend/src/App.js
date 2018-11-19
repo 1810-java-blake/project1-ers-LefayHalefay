@@ -19,14 +19,14 @@ class App extends Component {
       <>
         <AppNav/>
           <div id="main-content-container">
-          <Switch>
-                <Route path="/home" component={EmployeeDashboardComponent}/>
+            <Switch>
+                <Route path="/sign-in-employee"   component={SignInEmployeeComponent}/>
+                <Route path="/sign-in-manager"    component={SignInManagerComponent}/>
                 <Route path="/employee-dashboard" component={EmployeeDashboardComponent}/>
-                <Route path="/manager-dashboard" component={ManagerDashComponent}/>
-                <Route path="/sign-up" component={SignUpComponent}/>
-                <Route path="/sign-in-employee" component={SignInEmployeeComponent}/>
-                <Route path="/sign-in-manager" component={SignInManagerComponent}/>
-                <Route path=""/>
+                <Route path="/manager-dashboard"  component={ManagerDashComponent}/>
+                <Route path="/sign-up"            component={SignUpComponent}/>
+                {/* default */}
+                 <Route component={SignInEmployeeComponent} />
             </Switch>
           </div>
       </>

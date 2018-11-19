@@ -31,8 +31,10 @@ public class EmployeeUserServiceImpl implements EmployeeUserService {
 		if(eUsr != null)
 		{
 			session.setAttribute("role", eUsr.getErsEmployeeRole().getRoleName());
-			System.out.println("Bro, this is your session!");
+			session.setAttribute("userId", eUsr.getErsUsersId());
+			System.out.println("Bro, this is your session Role!");
 			System.out.println(session.getAttribute("role"));
+			System.out.println(session.getAttribute("userId"));
 			
 			return true;
 		}

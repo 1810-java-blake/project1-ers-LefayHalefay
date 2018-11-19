@@ -15,14 +15,15 @@ export class EmployeeDashboardComponent extends React.Component {
             reimbDescription: '',
             reimbReciept: '',
             reimbAuthorId: '',
-            reimbResolverId: 3,
-            reimbStatusId: 1,
+            reimbResolverId: '3',
+            reimbStatusId: '1',
             reimbTypeId: '',
             reimbSubmitted: '',
             reimbResolved: '' 
          }
       }
-        
+        let childObj = this.props.emloyeeInfo;
+        console.log(childObj);
    }
    componentDidMount(){
       fetch('http://localhost:8080/ProjectOne1/Reimbursement/request/employee/1')
@@ -39,14 +40,43 @@ export class EmployeeDashboardComponent extends React.Component {
       }); 
       
    }
-   submitRequest = (e) =>{
+   submitRequest = (e) => {
+      e.preventDefault();
       this.setState({
          ...this.state
       });
 
-      console.log(this.state.reimbRequestObjet);
-      console.log("from the component");
-      console.log(this.state);
+      let requestObject = {
+            reimbId: '',
+            reimbAmount: this.state.reimbAmount,
+            reimbDescription: this.state.reimbDescription,
+            reimbReciept: '',
+            reimbAuthorId: '1',
+            reimbResolverId: '3',
+            reimbStatusId: '1',
+            reimbTypeId: this.state.reimbTypeId,
+            reimbSubmitted: '',
+            reimbResolved: '' 
+      }
+
+      console.log(requestObject);
+      
+      fetch('http://localhost:8080/ProjectOne1/Reimbursement/request/addRequest', {
+         method: 'POST',
+         body: JSON.stringify(requestObject),
+         headers: {
+           'Content-Type': 'application/json'
+         },
+         credentials: 'include'
+       })
+         .then(res => {
+            if(res.status === 200){
+               alert("You have succefully Added Request!");
+            }
+         })
+         .catch(err=>{
+            console.log(err)
+      }) 
    }
 
    handleReimbAmount = (e)=>{
@@ -78,21 +108,25 @@ export class EmployeeDashboardComponent extends React.Component {
    }
 
    timeConverter (UNIX_timestamp){
-      let a = new Date(UNIX_timestamp);
-      let months = ['1','2','3','4','5','6','7','8','9','10','11','12'];
-      let year = a.getFullYear();
-      let month = months[a.getMonth()];
-      let date = a.getDate();
-      let hour = a.getHours();
-      let min = a.getMinutes();
-      //let  sec = a.getSeconds();
-      let time = month + '/' + date + '/' + year + ' ' + hour + ':' + min;
+      let time = '';
+      
+      if(UNIX_timestamp!== null) {
+         let a = new Date(UNIX_timestamp);
+         let months = ['1','2','3','4','5','6','7','8','9','10','11','12'];
+         let year = a.getFullYear();
+         let month = months[a.getMonth()];
+         let date = a.getDate();
+         let hour = a.getHours();
+         let min = a.getMinutes();
+         //let  sec = a.getSeconds();
+         time = month + '/' + date + '/' + year + ' ' + hour + ':' + min;
+      } 
       return time;
    };
 
    render(){
-      var first = this.props.emloyeeInfo;
-      console.log(first);
+      // var first = this.props.emloyeeInfo;
+      // console.log(first);
       return(
          <>
          {/* <SignInEmployeeComponent value={this.state.value}/> */}
@@ -144,7 +178,7 @@ export class EmployeeDashboardComponent extends React.Component {
                               </div>
                           
                         </div>
-                        <div className="modal-footer">
+                        <div className="modal-footer backgroundForBody">
                            <div className="row">
                               <div className="col">
                                  <button type="button" className="btn btn-danger" data-dismiss="modal">Cancel</button>

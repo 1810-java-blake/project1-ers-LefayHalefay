@@ -42,7 +42,9 @@ export class SignInManagerComponent extends React.Component {
              this.props.history.push('/manager-dashboard');
            
           } else if(res.status === 403){
-            alert("Wrong Username or Password Entered!");
+            alert("Error: Wrong Username or Password Entered!");
+          } else if(res.status === 401){
+             alert("Erro: You are Not a Manger!")
           }
         })
         .catch(err => {

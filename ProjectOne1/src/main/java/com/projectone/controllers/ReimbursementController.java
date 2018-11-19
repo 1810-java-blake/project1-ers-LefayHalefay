@@ -55,10 +55,23 @@ public class ReimbursementController {
 		System.out.println(Arrays.toString(uriArray));
 		
 		if(uriArray[2].startsWith("allEmployees")) {
-			//String role = (String) reqt.getSession().getAttribute("role");	
+			
+			Object role = reqt.getSession().getAttribute("role");
+			System.out.println(role);
+			
 			List<Reimbursement> reimbRequest = reimbService.findRequestAllEmployees();
 			ResponseMapper.convertAndAttach(reimbRequest, resp);
 			return;
+			
+//			if(role == "Manager")
+//			{
+//				
+//			} else {
+//				resp.setStatus(401);
+//				return;
+//			}
+			
+			
 			
 		} else if(uriArray[2].startsWith("employee")){
 			try {
@@ -85,7 +98,7 @@ public class ReimbursementController {
 		
 		System.out.println(Arrays.toString(uriArray));
 		
-		if(uriArray[2].startsWith("updateRequest")) {
+		if(uriArray[2].startsWith("addRequest")) {
 			
 			Reimbursement reimbRequest = objMap.readValue(reqt.getReader(), Reimbursement.class);
 			reimbService.addRequestByEmployee(reimbRequest);

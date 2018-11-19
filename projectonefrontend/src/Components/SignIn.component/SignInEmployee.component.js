@@ -60,7 +60,7 @@ export class SignInEmployeeComponent extends React.Component{
            
           } else if(res.status === 403){
             alert("Wrong Username or Password Entered!");
-          }
+          } 
         })
         .catch(err => {
           console.log(err);
@@ -69,7 +69,7 @@ export class SignInEmployeeComponent extends React.Component{
    render(){
       return(
          <>
-         <EmployeeDashboardComponent data={this.state.employeeInfo}/>
+         {/* <EmployeeDashboardComponent data={this.state.employeeInfo}/> */}
          <div className="backgroundForBody" >
             <div className="container py-5">
                <div className="row">
